@@ -11,4 +11,9 @@ FactoryGirl.define do
         end
     end
 
+    factory :micropost do
+        content "ladsie sdfialk zxclai ier sdaoi "
+        user
+    end
+
 end
