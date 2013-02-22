@@ -27,6 +27,18 @@ describe "Micropost pages" do
                 expect { click_button "Post" }.to change(Micropost, :count).by(1)
             end
         end
+        
+        describe "pagination" do
+            before(:all)    { 30.times { FactoryGirl.create(:micropost, user: user, content: 'lorem epson') }}
+            after(:all)     { Micropost.delete_all }
+
+            it "should list each micropost" do
+                Micropost.paginate(page: 1).each do |micropost|
+                    page.should have_selector('li', text: micropost.content)
+                end
+            end
+        end
+
     end
 
     describe "micropost destruction" do

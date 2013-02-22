@@ -29,6 +29,9 @@ describe "Static pages" do
                 page.should have_selector("li##{item.id}", text: item.content)
             end
         end
+        describe "should have 2 microposts counted" do
+            it { should have_content('2 microposts') }
+        end
     end
   end
   

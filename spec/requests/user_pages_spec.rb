@@ -54,7 +54,9 @@ describe "User pages" do
   end
 
   describe "profile page" do
-    let(:user) { FactoryGirl.create(:user) }
+    before(:all) { 2.times { FactoryGirl.create(:user) }}
+    let(:user) { User.first }
+    let(:diff_user) { User.last }
     let!(:m1) { FactoryGirl.create(:micropost, user: user, content: "Foo") }
     let!(:m2) { FactoryGirl.create(:micropost, user: user, content: "Bar") }
     before { visit user_path(user) }
@@ -66,6 +68,14 @@ describe "User pages" do
         it { should have_content(m1.content) }
         it { should have_content(m2.content) }
         it { should have_content(user.microposts.count) } 
+    end
+
+    describe "cannot delete other's microposts" do
+        before do
+            sign_in diff_user
+            visit user_path(user)
+        end
+        it { should_not have_content('delete') }
     end
   end
 
